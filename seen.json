@@ -1,0 +1,338 @@
+{
+  "last_updated": "2026-07-03T00:00:00Z",
+  "articles": {
+    "aJkti8uMPgdY": {
+      "url": "https://school.jinritemai.com/doudian/web/articlev0/aJkti8uMPgdY",
+      "title": "本周新规速递（2026.06.12）",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "周度汇总", "商家", "创作者"]
+    },
+    "aJiVT7vkZXRj": {
+      "url": "https://school.jinritemai.com/doudian/web/articlev0/aJiVT7vkZXRj",
+      "title": "本周新规速递（2026.04.24）",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "周度汇总"]
+    },
+    "aJhS9gzYsE1s": {
+      "url": "https://school.jinritemai.com/doudian/web/articlev0/aJhS9gzYsE1s",
+      "title": "本周新规速递（2026.04.03）",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "周度汇总"]
+    },
+    "aJgJJhVJDQTT": {
+      "url": "https://school.jinritemai.com/doudian/web/articlev0/aJgJJhVJDQTT",
+      "title": "本周新规速递（2026.03.13）",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "周度汇总"]
+    },
+    "portrait-protection": {
+      "url": "https://www.stdaily.com/web/gdxw/2026-07/01/content_540710.html",
+      "title": "抖音电商上线"肖像保护功能"",
+      "source": "科技日报",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["产品更新", "AI治理", "达人保护"]
+    },
+    "creator-fee-tier": {
+      "url": "https://school.jinritemai.com/doudian/web/article/101665",
+      "title": "精选联盟达人技术服务费分级新规（7月8日生效）",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "达人", "费率"]
+    },
+    "low-quality-behavior": {
+      "url": "https://school.jinritemai.com",
+      "title": "《低俗行为管理细则》修订（6月17日生效）",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "内容治理"]
+    },
+    "livestream-penalty": {
+      "url": "https://news.qq.com/rain/a/20260701A022KW00",
+      "title": "抖音直播违规诱导消费治理公告（34万个直播间被处置）",
+      "source": "抖音黑板报",
+      "first_seen": "2026-07-02T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["平台治理", "直播", "消费者保护"]
+    },
+    "minor-protection-20260702": {
+      "url": "https://news.bjd.com.cn/2026/07/02/11840447.shtml",
+      "title": "抖音未成年人保护专项治理（7月2日）",
+      "source": "抖音黑板报",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["平台治理", "未成年人保护"]
+    },
+    "doubao-bangnixuan": {
+      "url": "https://www.ithome.com/0/942/850.htm",
+      "title": "豆包「帮你选」功能正式上线（4月24日）",
+      "source": "IT之家",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "analysis",
+      "status": "active",
+      "tags": ["产品更新", "AI", "电商闭环"]
+    },
+    "doubao-2.1-pro": {
+      "url": "https://www.donews.com/news/detail/4/6608950.html",
+      "title": "豆包大模型2.1 Pro发布（6月23日FORCE大会）",
+      "source": "DoNews",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "analysis",
+      "status": "active",
+      "tags": ["产品更新", "AI", "大模型"]
+    },
+    "volcano-agent-2.0": {
+      "url": "https://www.volcengine.com/docs/6360/1356409",
+      "title": "火山引擎创作Agent 2.0升级（接入Seedance 2.0）",
+      "source": "volcengine.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "analysis",
+      "status": "active",
+      "tags": ["产品更新", "AI", "短视频", "营销"]
+    },
+    "doubao-paid-plan": {
+      "url": "https://www.dutenews.com/n/article/10674541",
+      "title": "豆包付费内容计划（68/200/500元三档）",
+      "source": "深圳特区报",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "analysis",
+      "status": "active",
+      "tags": ["产品更新", "AI", "商业化"]
+    },
+    "ai-ecommerce-tools": {
+      "url": "https://www.volcengine.com/docs/6360/1356409",
+      "title": "抖店AI工具矩阵（AI练播房/直播洞察/矩阵管家）",
+      "source": "火山引擎",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "analysis",
+      "status": "active",
+      "tags": ["产品更新", "AI", "直播", "商家工具"]
+    },
+    "ebrun-fee-analysis": {
+      "url": "https://m.ebrun.com/680819.html",
+      "title": "达人技术服务费分级深度解析",
+      "source": "亿邦动力",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "third_party",
+      "status": "active",
+      "tags": ["第三方分析", "达人", "费率"]
+    },
+    "super-fortune-bag": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13174",
+      "title": "关于修订《「超级福袋」管理规则》的公示通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "公示通知", "营销推广", "P1"]
+    },
+    "abnormal-shipping-governance": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/11687",
+      "title": "关于商家设置异常运费的治理公告",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["治理公告", "商家", "运费", "P1"]
+    },
+    "creator-price-violation": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13174",
+      "title": "关于修订《创作者【违规宣传价格】处置细则》的公示通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "公示通知", "创作者", "价格违规", "P1"]
+    },
+    "shop-auth-naming": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13174",
+      "title": "关于修订《店铺授权号类型与命名规范》的公示通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "公示通知", "商家管理", "P1"]
+    },
+    "instant-refund-revision": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13174",
+      "title": "关于修订《商家未发货极速退款服务规范》的公示通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "公示通知", "商家", "退款", "P1"]
+    },
+    "shipping-behavior-revision": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13174",
+      "title": "关于修订《商家发货行为管理规则》的公示通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "公示通知", "商家", "发货", "P1"]
+    },
+    "creator-red-ten-revision": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13174",
+      "title": "关于修订《抖音电商创作者「红十条」违规管理规则》的公示通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "公示通知", "创作者", "违规管理", "P1"]
+    },
+    "creator-appeal-standard": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13174",
+      "title": "关于修订《创作者"电商处罚"申诉举证标准》的公示通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["规则变更", "公示通知", "创作者", "申诉", "P1"]
+    },
+    "apparel-false-ads-governance": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/11687",
+      "title": "关于服饰行业夸大/虚假宣传问题的专项治理公告",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["治理公告", "服饰", "虚假宣传", "行业专项", "P1"]
+    },
+    "wifi-false-ads": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/11687",
+      "title": "关于无线WiFi设备虚假宣传治理公告",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["治理公告", "虚假宣传", "数码", "P1"]
+    },
+    "alliance-rules-revision": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于修订《精选联盟平台管理规则》的意见征集通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "精选联盟", "商家", "P2"]
+    },
+    "creator-special-goods": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于修订《创作者添加特殊要求商品细则》的意见征集通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "创作者", "P2"]
+    },
+    "alliance-service-agreement": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于修订《"精选联盟"服务协议（委托人）》的征集意见通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "精选联盟", "P2"]
+    },
+    "three-guarantees-catalog": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于修订《抖音电商平台三包期有效目录》的意见征集通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "消费者保障", "三包", "P2"]
+    },
+    "false-ads-penalty-change": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于虚假宣传部分违规处置变更的意见征集",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "虚假宣传", "违规处置", "P2"]
+    },
+    "service-provider-management": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于修订《抖音电商运营类服务商管理规范》的意见征集通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "服务商", "P2"]
+    },
+    "cps-settlement-rules": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于修订《【运营类服务商】结算金额分成能力（CPS）管理规则》的意见征集通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "服务商", "CPS", "P2"]
+    },
+    "material-mismatch-rules": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/13173",
+      "title": "关于修订《商家【商品材质成分不符】细则》的意见征集通知",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["意见征集", "商家", "材质成分", "服饰", "P2"]
+    },
+    "deposit-management": {
+      "url": "https://school.jinritemai.com/doudian/web/rules/ruleHouse",
+      "title": "保证金管理规范",
+      "source": "school.jinritemai.com",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "official",
+      "status": "active",
+      "tags": ["最新规则", "保证金", "P3"]
+    },
+    "shipping-insurance-upgrade": {
+      "url": "https://www.jiemian.com/article/14696908.html",
+      "title": "退换货运费险上门取件赔付首重升至3公斤",
+      "source": "界面新闻",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "third_party",
+      "status": "active",
+      "tags": ["产品更新", "物流", "消费者保障"]
+    },
+    "618-2026-battle-report": {
+      "url": "https://m.ebrun.com/681191.html",
+      "title": "2026年抖音商城618战报：中小达人贡献80%带货额",
+      "source": "亿邦动力",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "third_party",
+      "status": "active",
+      "tags": ["第三方分析", "618", "达人生态"]
+    },
+    "byte-management-reform": {
+      "url": "https://36kr.com/p/3878111899725829",
+      "title": "字节跳动管理变革：梁汝波发布新版领导力原则",
+      "source": "36氪",
+      "first_seen": "2026-07-03T00:00:00Z",
+      "trust_level": "third_party",
+      "status": "active",
+      "tags": ["行业动态", "字节跳动", "管理变革"]
+    }
+  }
+}

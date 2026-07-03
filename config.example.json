@@ -1,0 +1,5 @@
+{
+  "feishu_webhook": "https://open.feishu.cn/open-apis/bot/v2/hook/xxxxx",
+  "wecom_webhook": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxx",
+  "_instructions": "以上值配置到 GitHub Secrets 中，不要在代码里明文存储。此文件仅作为格式参考。"
+}

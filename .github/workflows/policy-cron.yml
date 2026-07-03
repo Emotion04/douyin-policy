@@ -1,0 +1,54 @@
+name: 抖音政策采集 · 定时
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'   # 周一 UTC 1:00 = 北京时间 9:00
+    - cron: '0 1 * * 4'   # 周四 UTC 1:00 = 北京时间 9:00
+  workflow_dispatch:       # 手动触发
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 并行抓取 8 路 API
+        env:
+          BASE: "https://school.jinritemai.com"
+        run: |
+          mkdir -p data
+          # 规则动态
+          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=13174&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/13174.json &
+          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=13173&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/13173.json &
+          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11689&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11689.json &
+          # 公告专区
+          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11687&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11687.json &
+          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11693&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11693.json &
+          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11686&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11686.json &
+          # 首页 + 带摘要规则
+          curl -sL "$BASE/api/eschool/v1/rule/center/main?new_rule_num=6&violation_num=6" -H 'User-Agent: Mozilla/5.0' -o data/main.json &
+          curl -sL "$BASE/api/eschool/v1/rule/list?rule_type=4&page=1&page_size=10" -H 'User-Agent: Mozilla/5.0' -o data/rule_type_4.json &
+          wait
+          echo "API 抓取完成"
+          for f in data/*.json; do
+            size=$(wc -c < "$f")
+            echo "  $f: ${size} bytes"
+          done
+
+      - name: 整理数据 + 推送
+        env:
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
+        run: |
+          echo "=== 抖音政策情报 $(date +%Y/%m/%d) ==="
+          # 此处调用分析脚本
+          python3 scripts/analyze.py
+
+      - name: 提交 seen.json
+        run: |
+          git config user.name "Policy Bot"
+          git config user.email "bot@policy.local"
+          git add seen.json
+          git diff --staged --quiet || git commit -m "chore: update seen.json $(date +%Y-%m-%d)"
+          git push
