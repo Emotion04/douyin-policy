@@ -20,38 +20,52 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: 并行抓取 8 路 API
-        env:
-          BASE: "https://school.jinritemai.com"
         run: |
           mkdir -p data
-          # 规则动态
-          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=13174&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/13174.json &
-          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=13173&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/13173.json &
-          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11689&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11689.json &
-          # 公告专区
-          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11687&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11687.json &
-          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11693&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11693.json &
-          curl -sL "$BASE/api/eschool/v2/library/article/list?node_id=11686&page_size=10&page=1" -H 'User-Agent: Mozilla/5.0' -o data/11686.json &
-          # 首页 + 带摘要规则
-          curl -sL "$BASE/api/eschool/v1/rule/center/main?new_rule_num=6&violation_num=6" -H 'User-Agent: Mozilla/5.0' -o data/main.json &
-          curl -sL "$BASE/api/eschool/v1/rule/list?rule_type=4&page=1&page_size=10" -H 'User-Agent: Mozilla/5.0' -o data/rule_type_4.json &
+          BASE="https://school.jinritemai.com"
+          UA="Mozilla/5.0 (compatible; DouyinPolicyBot/1.0)"
+
+          fetch() {
+            local label=$1 url=$2 out=$3
+            # 重试最多3次，每次间隔5秒
+            for i in 1 2 3; do
+              code=$(curl -sL -w "%{http_code}" "$url" -H "User-Agent: $UA" -o "$out" --connect-timeout 10 --max-time 30)
+              if [ "$code" = "200" ]; then
+                size=$(wc -c < "$out")
+                echo "  ✅ $label: HTTP $code, ${size} bytes"
+                return 0
+              fi
+              echo "  ⚠️ $label 第${i}次: HTTP $code, 5秒后重试..."
+              sleep 5
+            done
+            echo "  ❌ $label: 3次重试均失败，标记为空"
+            echo '{"error":"fetch failed after 3 retries"}' > "$out"
+          }
+
+          fetch "更新公示"   "$BASE/api/eschool/v2/library/article/list?node_id=13174&page_size=10&page=1" data/13174.json &
+          fetch "意见征集"   "$BASE/api/eschool/v2/library/article/list?node_id=13173&page_size=10&page=1" data/13173.json &
+          fetch "规则速递"   "$BASE/api/eschool/v2/library/article/list?node_id=11689&page_size=10&page=1" data/11689.json &
+          fetch "治理公告"   "$BASE/api/eschool/v2/library/article/list?node_id=11687&page_size=10&page=1" data/11687.json &
+          fetch "违规公示"   "$BASE/api/eschool/v2/library/article/list?node_id=11693&page_size=10&page=1" data/11693.json &
+          fetch "临时公告"   "$BASE/api/eschool/v2/library/article/list?node_id=11686&page_size=10&page=1" data/11686.json &
+          fetch "首页"       "$BASE/api/eschool/v1/rule/center/main?new_rule_num=6&violation_num=6" data/main.json &
+          fetch "带摘要规则" "$BASE/api/eschool/v1/rule/list?rule_type=4&page=1&page_size=10" data/rule_type_4.json &
           wait
-          echo "API 抓取完成"
-          for f in data/*.json; do
-            size=$(wc -c < "$f")
-            echo "  $f: ${size} bytes"
-          done
+          echo "抓取完毕"
 
       - name: 判断运行模式
         id: mode
         run: |
-          if [ "${{ github.event.inputs.recap }}" = "true" ] || [ "$(date +%u)" = "7" ]; then
+          # recap 判定：手动勾选 OR 周日(UTC=7)
+          if [ "$RECAP_INPUT" = "true" ] || [ "$(date +%u)" = "7" ]; then
             echo "recap_flag=--recap" >> $GITHUB_OUTPUT
             echo "📋 模式: 周回顾（跳过去重）"
           else
             echo "recap_flag=" >> $GITHUB_OUTPUT
             echo "🆕 模式: 常规采集"
           fi
+        env:
+          RECAP_INPUT: ${{ github.event.inputs.recap || 'false' }}
 
       - name: 整理数据 + 推送
         env:
