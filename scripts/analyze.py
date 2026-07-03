@@ -168,8 +168,8 @@ def collect():
 
     return all_entries, status
 
-def filter_and_classify(entries, seen_data):
-    """过滤 + 去重 + 分级"""
+def filter_and_classify(entries, seen_data, recap=False):
+    """过滤 + 去重 + 分级。recap=True 时跳过去重，标记为'本周回顾'"""
     today = datetime.now()
     cutoff = today - timedelta(days=7)
     seen_articles = seen_data.get("articles", {})
@@ -188,19 +188,23 @@ def filter_and_classify(entries, seen_data):
             result["SKIPPED"].append(e)
             continue
 
-        # 去重：用 title 匹配
-        is_new = True
-        for _, v in seen_articles.items():
-            if v.get("title", "") == title:
-                is_new = False
-                break
-
-        if is_new:
-            new_count += 1
-            e["status"] = "new"
-        else:
+        if recap:
+            # 周回顾模式：全部纳入，统一标记
+            e["status"] = "recap"
             tracked_count += 1
-            e["status"] = "tracked"
+        else:
+            # 正常模式：去重
+            is_new = True
+            for _, v in seen_articles.items():
+                if v.get("title", "") == title:
+                    is_new = False
+                    break
+            if is_new:
+                new_count += 1
+                e["status"] = "new"
+            else:
+                tracked_count += 1
+                e["status"] = "tracked"
 
         # 时间分组
         try:
@@ -222,7 +226,8 @@ def build_feishu_card(entries, header_title, template_color):
 
     elements = []
     for i, e in enumerate(entries[:10]):
-        status_emoji = "🆕" if e.get("status") == "new" else "📌"
+        status_map = {"new": "🆕", "tracked": "📌", "recap": "📋"}
+        status_emoji = status_map.get(e.get("status", ""), "📌")
         title = e.get("title", "无标题")
         source = e.get("source_label", "")
         date = e.get("date", "")
@@ -255,7 +260,8 @@ def build_wecom_markdown(entries, header):
         return None
     lines = [f"## {header}", ""]
     for e in entries[:10]:
-        status = "🆕" if e.get("status") == "new" else "📌"
+        status_map = {"new": "🆕", "tracked": "📌", "recap": "📋"}
+        status = status_map.get(e.get("status", ""), "📌")
         title = e.get("title", "")
         source = e.get("source_label", "")
         date = e.get("date", "")
@@ -331,7 +337,10 @@ def update_seen(classified, seen_data):
 # ============================================================
 
 def main():
-    print(f"=== 抖音小灵通 GitHub Actions ===")
+    recap = "--recap" in sys.argv
+    mode_label = "📋 周回顾" if recap else "常规采集"
+
+    print(f"=== 抖音小灵通 · {mode_label} ===")
     print(f"时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
 
@@ -341,31 +350,50 @@ def main():
     api_ok = sum(1 for v in status.values() if v["ok"])
     api_fail = sum(1 for v in status.values() if not v["ok"])
     print(f"   ✅ {api_ok} 路成功  ❌ {api_fail} 路失败  共 {len(entries)} 条原始条目")
-    for node_id, s in status.items():
-        symbol = "✅" if s["ok"] else "❌"
-        label = SOURCE_LABELS.get(node_id, node_id)
-        print(f"   {symbol} {label}: {s['count']} 条")
 
     # 2. 过滤+去重+分级
     seen_data = load_seen()
-    classified, new_count, tracked_count = filter_and_classify(entries, seen_data)
+    classified, new_count, tracked_count = filter_and_classify(entries, seen_data, recap=recap)
 
     p1_count = len(classified["P1"])
     p2_count = len(classified["P2"])
     p3_count = len(classified["P3"])
     total = p1_count + p2_count + p3_count
 
-    print(f"\n📊 过滤后: {total} 条有效 (🆕{new_count} 📌{tracked_count})")
-    print(f"   P1🔴 {p1_count}  P2🟡 {p2_count}  P3⚪ {p3_count}  跳过 {len(classified['SKIPPED'])} 条")
+    if recap:
+        print(f"\n📋 周回顾模式 — 跳过去重，近7天全部 {total} 条")
+    else:
+        print(f"\n📊 过滤后: {total} 条有效 (🆕{new_count} 📌{tracked_count})")
 
-    # 3. 推送 — 低优先级先发
+    # 3. 无新增时的处理
+    if new_count == 0 and not recap:
+        print("\n😴 本期无新增规则变更")
+        heartbeat = {
+            "msgtype": "markdown",
+            "markdown": {"content": f"## 📭 暂无规则变更\n\n{datetime.now().strftime('%Y/%m/%d %H:%M')}\n本期无新增规则。\n已追踪 {len(seen_data.get('articles', {}))} 条历史规则。"}
+        }
+        push_wecom(heartbeat)
+        push_feishu({
+            "msg_type": "interactive",
+            "card": {
+                "header": {"title": {"tag": "plain_text", "content": f"📭 暂无规则变更 {datetime.now().strftime('%Y/%m/%d')}"}, "template": "blue"},
+                "elements": [{"tag": "div", "text": {"tag": "lark_md", "content": f"本期无新增规则变更。\n已追踪 **{len(seen_data.get('articles', {}))}** 条历史规则。\n系统正常运行中 ✅"}}]
+            }
+        })
+        print("   ✅ 心跳已发送")
+        return
+
+    # 4. 推送 — 低优先级先发
     date_str = datetime.now().strftime("%Y/%m/%d")
+    if recap:
+        date_str = f"{date_str} 周回顾"
 
-    print("\n📤 推送中...")
+    print(f"\n📤 推送中...")
 
     # P3
-    p3_card = build_feishu_card(classified["P3"], f"⚪ 近期更新的规则 {date_str}", "wathet")
-    p3_wc = build_wecom_markdown(classified["P3"], f"⚪ 近期更新的规则 {date_str}")
+    header_prefix = "📋" if recap else "⚪"
+    p3_card = build_feishu_card(classified["P3"], f"{header_prefix} 近期更新的规则 {date_str}", "wathet")
+    p3_wc = build_wecom_markdown(classified["P3"], f"{header_prefix} 近期更新的规则 {date_str}")
     if p3_card:
         push_feishu(p3_card)
         push_wecom(p3_wc)
@@ -373,8 +401,9 @@ def main():
         time.sleep(3)
 
     # P2
-    p2_card = build_feishu_card(classified["P2"], f"🟡 提案与通知 {date_str}", "yellow")
-    p2_wc = build_wecom_markdown(classified["P2"], f"🟡 提案与通知 {date_str}")
+    header_prefix = "📋" if recap else "🟡"
+    p2_card = build_feishu_card(classified["P2"], f"{header_prefix} 提案与通知 {date_str}", "yellow")
+    p2_wc = build_wecom_markdown(classified["P2"], f"{header_prefix} 提案与通知 {date_str}")
     if p2_card:
         push_feishu(p2_card)
         push_wecom(p2_wc)
@@ -384,7 +413,6 @@ def main():
     # P1（最后发，最重要）
     p1_entries = classified["P1"]
     if p1_entries:
-        # 按时效分组
         recent = [e for e in p1_entries if e.get("is_recent")]
         older = [e for e in p1_entries if not e.get("is_recent")]
         combined = recent + older
@@ -392,33 +420,30 @@ def main():
         for chunk_idx in range(0, len(combined), 10):
             chunk = combined[chunk_idx:chunk_idx+10]
             part = f"({chunk_idx//10 + 1}/{(len(combined)-1)//10 + 1})" if len(combined) > 10 else ""
-            card = build_feishu_card(chunk, f"🔴 确认规则变更 {part} {date_str}", "red")
-            wc = build_wecom_markdown(chunk, f"🔴 确认规则变更 {part} {date_str}")
+            header_prefix = "📋" if recap else "🔴"
+            card = build_feishu_card(chunk, f"{header_prefix} 确认规则变更 {part} {date_str}", "red")
+            wc = build_wecom_markdown(chunk, f"{header_prefix} 确认规则变更 {part} {date_str}")
             if card:
                 push_feishu(card)
                 push_wecom(wc)
                 print(f"   ✅ P1 {part} 已推送")
                 time.sleep(3)
 
-    # 4. 更新 seen.json
-    print("\n💾 更新 seen.json...")
-    seen_data = update_seen(classified, seen_data)
-    print(f"   总条目: {len(seen_data.get('articles', {}))}")
+    # 5. 更新 seen.json（只有常规模式才更新）
+    if not recap:
+        print("\n💾 更新 seen.json...")
+        seen_data = update_seen(classified, seen_data)
+        print(f"   总条目: {len(seen_data.get('articles', {}))}")
+    else:
+        print("\n📋 周回顾模式 — 不更新 seen.json")
 
-    # 5. 输出报告摘要
+    # 6. 摘要
     print(f"\n{'='*50}")
-    print(f"# 抖音政策情报报告 — {date_str}")
-    print(f"共 {total} 条 · 🆕新增 {new_count} · 📌已追踪 {tracked_count}")
+    print(f"# 抖音政策情报 — {date_str}")
+    print(f"共 {total} 条")
     if api_fail > 0:
-        print(f"⚠️ {api_fail} 个数据源获取失败（可能需手动补采）")
-
-    # 打印 P1 条目
-    print(f"\n━━━ P1 🔴 确认变更 ━━━")
-    for e in classified["P1"]:
-        s = "🆕" if e["status"] == "new" else "📌"
-        print(f"  {s} {e['title']} | {e['source_label']} · {e['date']}")
-
-    print(f"\nDone. ✅")
+        print(f"⚠️ {api_fail} 个数据源失败（可能需手动补采）\n")
+    print(f"Done. ✅")
 
 if __name__ == "__main__":
     main()

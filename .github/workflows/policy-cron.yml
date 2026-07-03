@@ -2,9 +2,15 @@ name: 抖音政策采集 · 定时
 
 on:
   schedule:
-    - cron: '0 1 * * 1'   # 周一 UTC 1:00 = 北京时间 9:00
-    - cron: '0 1 * * 4'   # 周四 UTC 1:00 = 北京时间 9:00
-  workflow_dispatch:       # 手动触发
+    - cron: '0 1 * * 1'   # 常规：周一 UTC 1:00 = 北京时间 9:00
+    - cron: '0 1 * * 4'   # 常规：周四 UTC 1:00 = 北京时间 9:00
+    - cron: '0 2 * * 0'   # 周回顾：周日 UTC 2:00 = 北京时间 10:00 (无视去重)
+  workflow_dispatch:
+    inputs:
+      recap:
+        description: '周回顾模式（跳过去重，全量推送近7天）'
+        type: boolean
+        default: false
 
 jobs:
   collect:
@@ -36,14 +42,24 @@ jobs:
             echo "  $f: ${size} bytes"
           done
 
+      - name: 判断运行模式
+        id: mode
+        run: |
+          if [ "${{ github.event.inputs.recap }}" = "true" ] || [ "$(date +%u)" = "7" ]; then
+            echo "recap_flag=--recap" >> $GITHUB_OUTPUT
+            echo "📋 模式: 周回顾（跳过去重）"
+          else
+            echo "recap_flag=" >> $GITHUB_OUTPUT
+            echo "🆕 模式: 常规采集"
+          fi
+
       - name: 整理数据 + 推送
         env:
           FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
           WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
         run: |
           echo "=== 抖音政策情报 $(date +%Y/%m/%d) ==="
-          # 此处调用分析脚本
-          python3 scripts/analyze.py
+          python3 scripts/analyze.py ${{ steps.mode.outputs.recap_flag }}
 
       - name: 提交 seen.json
         run: |

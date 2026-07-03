@@ -29,6 +29,16 @@ D:\WCode\Douyin-Policy-Github\
 | **定时** | 自动，周一/四 UTC 1:00 |
 | **手动触发** | GitHub → Actions → policy-cron → Run workflow |
 | **本地测试** | `python3 scripts/analyze.py`（需先手动跑 curl 抓 data/） |
+| **本地测试周回顾** | `python3 scripts/analyze.py --recap` |
+
+### 运行模式
+
+| 模式 | 触发 | 去重 | 标记 |
+|------|------|:--:|------|
+| **常规** | 周一/四 9:00 | ✅ | 🆕新增 📌已追踪 |
+| **周回顾** | 周日 10:00 | ❌ | 📋 本周回顾 |
+| **心跳** | 无新增时自动 | — | 📭 暂无变更 |
+| **手动** | workflow_dispatch 可选 recap | 默认✅ | — |
 
 ## 与 Windows 版（Douyin-Policy-Pro）的关系
 
